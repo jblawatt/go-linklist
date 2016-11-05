@@ -20,7 +20,7 @@ type Link struct {
 	Group string   `json:"group"`
 	Title string   `json:"title"`
 	Link  string   `json:"link"`
-	Tags  []string `json:"tags"`
+	// Tags  []string `json:"tags"`
 }
 
 func initialData() {
@@ -77,50 +77,49 @@ func removeDuplicates(xs *[]string) {
 	*xs = (*xs)[:j]
 }
 
-
-func mainHandler (context *gin.Context) {
+func mainHandler(context *gin.Context) {
 	tmpl, _ := template.ParseFiles("index.html")
-		list := load()
+	list := load()
 
-		var groups []string
+	var groups []string
 
-		for _, link := range list {
-			groups = append(groups, link.Group)
-		}
+	for _, link := range list {
+		groups = append(groups, link.Group)
+	}
 
-		removeDuplicates(&groups)
+	removeDuplicates(&groups)
 
-		data := map[string]interface{}{
-			"Links":  list,
-			"Groups": groups,
-		}
-		tmpl.ExecuteTemplate(context.Writer, "index.html", data)
+	data := map[string]interface{}{
+		"Links":  list,
+		"Groups": groups,
+	}
+	tmpl.ExecuteTemplate(context.Writer, "index.html", data)
 }
 
 func removeHandler(c *gin.Context) {
-		uniqueID := c.Param("id")
-		links := load()
-		var removeLink *Link
-		var keepLinks []*Link
+	uniqueID := c.Param("id")
+	links := load()
+	var removeLink *Link
+	var keepLinks []*Link
 
-		for _, link := range links {
-			if (link.ID == uniqueID) {
-				removeLink = link
-			} else {
-				keepLinks = append(keepLinks, link)
-			}
+	for _, link := range links {
+		if link.ID == uniqueID {
+			removeLink = link
+		} else {
+			keepLinks = append(keepLinks, link)
 		}
-
-		save(keepLinks)
-		c.JSON(http.StatusOK, removeLink)
-		
 	}
 
- func addHandler(context *gin.Context) {
-		var link *Link
+	save(keepLinks)
+	c.JSON(http.StatusOK, removeLink)
+
+}
+
+func addHandler(context *gin.Context) {
+	var link *Link
 	context.BindJSON(&link)
-		add(link)
-		context.JSON(http.StatusCreated, link)
+	add(link)
+	context.JSON(http.StatusCreated, link)
 }
 
 func main() {

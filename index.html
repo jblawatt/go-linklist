@@ -1,106 +1,107 @@
 <!doctype html>
 <html lang="de">
-    <head>
-        <title>Linklist</title>
-        <style>
 
-            h1, h2, h3, h4, h5, h6 {
-                color: #375EAB;
-            }
+<head>
+    <title>Linklist</title>
+    <style>
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: #375EAB;
+        }
+        
+        body {
+            font-family: "Roboto Condensed", "Arial", "sans-serif";
+            margin: 0;
+        }
+        
+        ul li {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        a {
+            color: #375EAB;
+            text-decoration: none;
+        }
+        
+        form {
+            background: #E0EBF5;
+            padding: 15px;
+        }
+        
+        button {
+            background: #375EAB;
+            color: white;
+            border: 0px;
+            padding: 8px;
+            border-radius: 3px;
+        }
+        
+        input {
+            padding: 5px;
+        }
+        
+        .button-remove {
+            padding: 5px;
+            color: white;
+        }
+        
+        .button-remove:hover {
+            color: #375EAB;
+        }
+        
+        .group {
+            float: left;
+            margin: 10px;
+        }
+    </style>
+</head>
 
-            body {
-                font-family: "Arial", "sans-serif";
-            }
+<body>
+    <form action="/add" class="form-add">
+        <label for="id-group">Group</label>
+        <input id="id-group" type="text">
 
-            ul li {
-                list-style: none;
-                margin-left: 0;
-            }
+        <label for="id-title">Title</label>
+        <input id="id-title" type="text">
 
-            a {
-                color: #375EAB;
-                text-decoration: none;
-            }
+        <label for="id-link">Link</label>
+        <input id="id-link" type="text">
 
-            form {
-                background: #E0EBF5;
-                padding: 15px;
-            }
+        <label for="id-tags">Tags</label>
+        <input id="id-tags" type="text">
 
-            button {
-                background: #375EAB;
-                color: white;
-                border: 0px;
-                padding: 8px;
-                border-radius: 3px;
-            }
-
-            input {
-                padding: 5px;
-            }
-
-            .button-remove {
-                padding: 5px;
-                color: white;
-            }
-
-            .button-remove:hover {
-                color: #375EAB;
-            }
-
-            .group {
-                float: left;
-                margin: 10px;
-            }
-
-        </style>
-    </head>
-    <body>
-        <h1>LinkList</h1>
-        <form action="/add" class="form-add">
-            <label for="id-group">Group</label>
-            <input id="id-group" type="text">
-
-            <label for="id-title">Title</label>
-            <input id="id-title" type="text">
-
-            <label for="id-link">Link</label>
-            <input id="id-link" type="text">
-
-            <label for="id-tags">Tags</label>
-            <input id="id-tags" type="text">
-
-            <button id="btn-add">Speichern</button>
-        </form>
-        <ul>
-            {{range .Groups}}
-                <li>
-                    <a href="#{{.}}">{{.}}</a>
-                </li>
-            {{end}}
-        </ul>
-
-        {{$links := .Links}}
+        <button id="btn-add">Speichern</button>
+    </form>
+    <ul>
         {{range .Groups}}
-            <div class="group">
-                {{$group := .}}
-                <a href="#{{.}}">
-                    <h2>{{.}}</h2>
-                </a>
-                <ul>        
-                    {{range $links}}
-                        {{if eq .Group $group}}
-                        <li>
-                            <a href="/remove/{{.ID}}" class="button-remove">x</a>
-                            {{.Title}} - <a href="{{.Link}}" target="_blank">{{.Link}}</a>
-                        </li>
-                        {{end}}
-                    {{end}}
-                </ul>
-            </div>
+        <li>
+            <a href="#{{.}}">{{.}}</a>
+        </li>
         {{end}}
+    </ul>
 
-        <script>
+    {{$links := .Links}} {{range .Groups}}
+    <div class="group">
+        {{$group := .}}
+        <a href="#{{.}}">
+            <h2>{{.}}</h2>
+        </a>
+        <ul>
+            {{range $links}} {{if eq .Group $group}}
+            <li>
+                <a href="/remove/{{.ID}}" class="button-remove">x</a> {{.Title}} - <a href="{{.Link}}" target="_blank">{{.Link}}</a>
+            </li>
+            {{end}} {{end}}
+        </ul>
+    </div>
+    {{end}}
+
+    <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Add Remove Handler
                 [].forEach.call(
@@ -150,5 +151,6 @@
             });
         </script>
 
-    </body>
+</body>
+
 </html>
