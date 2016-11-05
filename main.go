@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sort"
 )
 
 // FILENAME is the Constant for JSON File
@@ -86,6 +87,8 @@ func mainHandler(context *gin.Context) {
 	for _, link := range list {
 		groups = append(groups, link.Group)
 	}
+
+	sort.Strings(groups)
 
 	removeDuplicates(&groups)
 
